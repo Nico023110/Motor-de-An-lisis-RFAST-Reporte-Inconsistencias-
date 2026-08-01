@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motor de Análisis RFAST - Reporte de Inconsistencias</title>
+    <meta name="description" content="Sistema automatizado de auditoría y validación RFAST para la detección de inconsistencias clínicas RIPS.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- SheetJS & ExcelJS -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exceljs@4.3.0/dist/exceljs.min.js"></script>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo-icon">
+                    <i data-lucide="shield-alert"></i>
+                </div>
+                <div class="brand-text">
+                    <h2>Auditoría <span>RFAST</span></h2>
+                    <p>Reporte de Inconsistencias</p>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-btn active" data-tab="auditoria">
+                    <i data-lucide="sparkles"></i>
+                    <span>Motor de Auditoría</span>
+                </button>
+                <button class="nav-btn" data-tab="zonas">
+                    <i data-lucide="map-pin"></i>
+                    <span>Desglose por Zonas</span>
+                </button>
+                <button class="nav-btn" data-tab="inconsistencias">
+                    <i data-lucide="alert-circle"></i>
+                    <span>Log Inconsistencias</span>
+                </button>
+            </nav>
+
+            <div class="system-status">
+                <div class="status-indicator online"></div>
+                <div class="status-info">
+                    <span class="status-title">Motor Operativo</span>
+                    <span class="status-sub">Validación RFAST Normativa</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header Banner -->
+            <header class="top-header">
+                <div class="header-titles">
+                    <h1 id="page-title">Motor de Análisis RFAST & Auditoría Clínica</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" id="btn-load-demo">
+                        <i data-lucide="zap"></i> Cargar Datos de Prueba
+                    </button>
+                </div>
+            </header>
+
+            <!-- Tab: Auditoria View -->
+            <div id="tab-auditoria" class="tab-content active">
+
+                <!-- Upload Section -->
+                <section class="upload-card">
+                    <div class="upload-dropzone" id="main-dropzone" onclick="document.getElementById('file-input').click()">
+                        <input type="file" id="file-input" accept=".xlsx, .xls, .csv" multiple hidden>
+                        <div class="drop-icon">
+                            <i data-lucide="file-spreadsheet"></i>
+                        </div>
+                        <h3>Arrastrar archivos Excel RFAST o seleccionar archivos</h3>
+                        <div class="file-tags" id="file-tags-list"></div>
+                    </div>
+                </section>
+
+                <!-- Actions Bar -->
+                <section class="actions-bar" style="margin-bottom: 1.5rem; display: flex; justify-content: flex-end;">
+                    <button class="btn btn-primary btn-lg" id="btn-ejecutar" disabled>
+                        <i data-lucide="play-circle"></i> Ejecutar Auditoría RFAST
+                    </button>
+                </section>
+
+                <!-- Processing Loader -->
+                <div id="loader" class="loader-overlay hidden">
+                    <div class="spinner"></div>
+                    <h4 id="loader-message">Procesando y auditando archivo RFAST...</h4>
+                </div>
+
+                <!-- KPI Metrics Cards -->
+                <section class="kpi-grid">
+                    <div class="kpi-card blue">
+                        <div class="kpi-icon"><i data-lucide="file-text"></i></div>
+                        <div class="kpi-data">
+                            <span class="kpi-label">Registros Evaluados</span>
+                            <h3 id="kpi-total">0</h3>
+                        </div>
+                    </div>
+                    <div class="kpi-card amber">
+                        <div class="kpi-icon"><i data-lucide="alert-triangle"></i></div>
+                        <div class="kpi-data">
+                            <span class="kpi-label">Inconsistencias Detectadas</span>
+                            <h3 id="kpi-inconsistencias">0</h3>
+                        </div>
+                    </div>
+                    <div class="kpi-card green">
+                        <div class="kpi-icon"><i data-lucide="check-check"></i></div>
+                        <div class="kpi-data">
+                            <span class="kpi-label">Registros Conformes</span>
+                            <h3 id="kpi-conformes">0</h3>
+                        </div>
+                    </div>
+                    <div class="kpi-card purple">
+                        <div class="kpi-icon"><i data-lucide="percent"></i></div>
+                        <div class="kpi-data">
+                            <span class="kpi-label">Tasa de Conformidad</span>
+                            <h3 id="kpi-tasa">100%</h3>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Preview Section -->
+                <section class="results-section">
+                    <div class="results-header">
+                        <div class="results-title">
+                            <h3><i data-lucide="table"></i> Inconsistencias Clínicas Encontradas</h3>
+                            <span class="badge badge-warning" id="badge-count">0 inconsistencias</span>
+                        </div>
+                        <div class="results-controls">
+                            <div class="search-box">
+                                <i data-lucide="search"></i>
+                                <input type="text" id="search-auditoria" placeholder="Buscar por paciente, profesional, IPS...">
+                            </div>
+                            <button class="btn btn-success" id="btn-export-excel" disabled>
+                                <i data-lucide="download"></i> Descargar Reporte Excel Completo
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>CÓDIGO</th>
+                                    <th>DOCUMENTO</th>
+                                    <th>AFILIADO</th>
+                                    <th>IPS / PRESTADOR</th>
+                                    <th>CENTRO PROD.</th>
+                                    <th>FINALIDAD RIPS</th>
+                                    <th>INCONSISTENCIA DETECTADA</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                <tr>
+                                    <td colspan="7" class="empty-table-msg">
+                                        <i data-lucide="upload-cloud"></i>
+                                        <p>Sin datos procesados. Sube tus archivos o ejecuta la prueba de demostración.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pagination-bar">
+                        <span id="page-info">Mostrando 0 registros</span>
+                        <div class="pagination-controls">
+                            <button class="btn btn-secondary btn-sm" id="btn-prev-page" disabled>Anterior</button>
+                            <span id="current-page-num">Página 1</span>
+                            <button class="btn btn-secondary btn-sm" id="btn-next-page" disabled>Siguiente</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Tab: Desglose por Zonas -->
+            <div id="tab-zonas" class="tab-content hidden">
+                <section class="results-section">
+                    <div class="results-header">
+                        <div class="results-title">
+                            <h3><i data-lucide="map-pin" style="color: #6366F1"></i> Inconsistencias por Zona y Comuna</h3>
+                            <span class="badge badge-primary" id="badge-zonas">0 zonas activas</span>
+                        </div>
+                        <div class="results-controls">
+                            <select id="select-zona-filter" class="custom-select">
+                                <option value="ALL">Todas las Zonas</option>
+                                <option value="ZonaComuna-01">ZonaComuna-01</option>
+                                <option value="ZonaComuna-03">ZonaComuna-03</option>
+                                <option value="ZonaComuna-17">ZonaComuna-17</option>
+                                <option value="ZonaComuna-18">ZonaComuna-18</option>
+                                <option value="ZonaComuna-20">ZonaComuna-20</option>
+                                <option value="ZonaRuralNorte">ZonaRuralNorte</option>
+                                <option value="ZonaRuralSur">ZonaRuralSur</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ZONA</th>
+                                    <th>IPS / PUESTO SALUD</th>
+                                    <th>CÓDIGO</th>
+                                    <th>AFILIADO</th>
+                                    <th>FACTURA</th>
+                                    <th>INCONSISTENCIA A CORREGIR</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body-zonas">
+                                <tr><td colspan="6" class="empty-table-msg">Sin datos filtrados por zona.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination-bar">
+                        <span id="page-info-zonas">Mostrando 0 registros</span>
+                        <div class="pagination-controls">
+                            <button class="btn btn-secondary btn-sm" id="btn-prev-zonas" disabled>Anterior</button>
+                            <span id="page-num-zonas">Página 1</span>
+                            <button class="btn btn-secondary btn-sm" id="btn-next-zonas" disabled>Siguiente</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Tab: Log Inconsistencias General -->
+            <div id="tab-inconsistencias" class="tab-content hidden">
+                <section class="results-section">
+                    <div class="results-header">
+                        <div class="results-title">
+                            <h3><i data-lucide="alert-circle" style="color: #F59E0B"></i> Auditoría General de Inconsistencias</h3>
+                            <span class="badge badge-warning" id="badge-inconsistencias">0 registros</span>
+                        </div>
+                        <div class="results-controls">
+                            <div class="search-box">
+                                <i data-lucide="search"></i>
+                                <input type="text" id="search-inconsistencias" placeholder="Buscar...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>CODIGO</th>
+                                    <th>DOCUMENTO</th>
+                                    <th>AFILIADO</th>
+                                    <th>CAUSA EXTERNA</th>
+                                    <th>FINALIDAD RIPS</th>
+                                    <th>INCONSISTENCIA DETECTADA</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body-inconsistencias">
+                                <tr><td colspan="6" class="empty-table-msg">Sin inconsistencias registradas.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination-bar">
+                        <span id="page-info-inconsistencias">Mostrando 0 registros</span>
+                        <div class="pagination-controls">
+                            <button class="btn btn-secondary btn-sm" id="btn-prev-inconsistencias" disabled>Anterior</button>
+                            <span id="page-num-inconsistencias">Página 1</span>
+                            <button class="btn btn-secondary btn-sm" id="btn-next-inconsistencias" disabled>Siguiente</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Script App Logic -->
+    <script src="app.js"></script>
+</body>
+</html>
