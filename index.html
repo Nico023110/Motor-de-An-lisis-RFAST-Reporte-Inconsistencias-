@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Motor de Análisis RFAST - Reporte de Inconsistencias</title>
-    <meta name="description" content="Sistema automatizado de auditoría y validación RFAST para la detección de inconsistencias clínicas RIPS.">
+    <title>Motor de Auditoría Clínica - Reporte de Inconsistencias</title>
+    <meta name="description" content="Sistema automatizado de auditoría y validación clínica para la detección de inconsistencias RIPS.">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,7 +26,7 @@
                     <i data-lucide="shield-alert"></i>
                 </div>
                 <div class="brand-text">
-                    <h2>Auditoría <span>RFAST</span></h2>
+                    <h2>Auditoría <span>Clínica</span></h2>
                     <p>Reporte de Inconsistencias</p>
                 </div>
             </div>
@@ -50,7 +50,7 @@
                 <div class="status-indicator online"></div>
                 <div class="status-info">
                     <span class="status-title">Motor Operativo</span>
-                    <span class="status-sub">Validación RFAST Normativa</span>
+                    <span class="status-sub">Validación Clínica Normativa</span>
                 </div>
             </div>
         </aside>
@@ -60,7 +60,7 @@
             <!-- Header Banner -->
             <header class="top-header">
                 <div class="header-titles">
-                    <h1 id="page-title">Motor de Análisis RFAST & Auditoría Clínica</h1>
+                    <h1 id="page-title">Motor de Auditoría & Reporte de Inconsistencias</h1>
                 </div>
                 <div class="header-actions">
                     <button class="btn btn-secondary" id="btn-load-demo">
@@ -79,7 +79,7 @@
                         <div class="drop-icon">
                             <i data-lucide="file-spreadsheet"></i>
                         </div>
-                        <h3>Arrastrar archivos Excel RFAST o seleccionar archivos</h3>
+                        <h3>Arrastrar archivos Excel de atenciones o seleccionar archivos</h3>
                         <div class="file-tags" id="file-tags-list"></div>
                     </div>
                 </section>
@@ -87,14 +87,14 @@
                 <!-- Actions Bar -->
                 <section class="actions-bar" style="margin-bottom: 1.5rem; display: flex; justify-content: flex-end;">
                     <button class="btn btn-primary btn-lg" id="btn-ejecutar" disabled>
-                        <i data-lucide="play-circle"></i> Ejecutar Auditoría RFAST
+                        <i data-lucide="play-circle"></i> Ejecutar Auditoría Completa
                     </button>
                 </section>
 
                 <!-- Processing Loader -->
                 <div id="loader" class="loader-overlay hidden">
                     <div class="spinner"></div>
-                    <h4 id="loader-message">Procesando y auditando archivo RFAST...</h4>
+                    <h4 id="loader-message">Procesando y auditando archivo de atenciones...</h4>
                 </div>
 
                 <!-- KPI Metrics Cards -->

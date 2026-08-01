@@ -204,7 +204,7 @@ function parseCSVText(text) {
 function runAuditPipeline() {
     if (!state.rawRows.length) return;
 
-    showLoader('Ejecutando Motor de Auditoría RFAST (7 Validaciones Clínicas)...');
+    showLoader('Ejecutando Motor de Auditoría (7 Validaciones Clínicas)...');
     setTimeout(() => {
         state.inconsistencias = [];
 
@@ -487,7 +487,7 @@ function setupSearch(inputId, tabKey) {
 
 // Load Demo Dataset Simulation
 function loadDemoSampleData() {
-    showLoader('Cargando dataset de prueba RFAST (1.800 atenciones)...');
+    showLoader('Cargando dataset de prueba de atenciones (1.800 registros)...');
     setTimeout(() => {
         const sampleRows = [];
         const prestadores = [
@@ -510,12 +510,12 @@ function loadDemoSampleData() {
                 nombre_cexterna: isError ? 'ENFERMEDAD GENERAL' : 'PROMOCION Y MANTENIMIENTO',
                 atencion: '2026-07-15',
                 cajero: 'CAJ-01',
-                nombre_cajero: 'CAJERO SISTEMA RFAST',
+                nombre_cajero: 'CAJERO SISTEMA AUDITORIA',
                 nombre_prestador: ips,
                 centroprod: isError ? '1415' : '1000',
                 nombre_centroproduccion: isError ? 'CURSO DE VIDA ADULTO' : 'CONSULTA EXTERNA GENERAL',
                 profesional: 'MED-992',
-                nombre_profesional: `DR. MEDICO RFAST #${i}`,
+                nombre_profesional: `DR. MEDICO AUDITADO #${i}`,
                 documento: `11440${i + 500}`,
                 factura: `FAC-2026-${i + 100}`,
                 dx_principal: 'I10X',
@@ -559,7 +559,7 @@ async function exportAuditExcelReport() {
     const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = `Reporte_Inconsistencias_RFAST_${new Date().toISOString().slice(0, 10)}.xlsx`;
+    link.download = `Reporte_Inconsistencias_Clinicas_${new Date().toISOString().slice(0, 10)}.xlsx`;
     link.click();
 }
 
