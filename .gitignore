@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Private patient data and report files
+fuente/*.xlsx
+reporte/*.xlsx
+reporte_incompletos/*.xlsx
+
+# Environment & IDE
+.env
+.venv
+env/
+venv/
+.vscode/
+.idea/
