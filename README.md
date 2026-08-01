@@ -2,7 +2,7 @@
 
 Sistema automatizado de auditoría y validación de datos en salud (RIPS / Listado de actividades de usuarios) para la detección de inconsistencias en codificación de causas externas, finalidades RIPS y tipos de consulta por centro de producción.
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 reporte_inconsistencias/
@@ -13,7 +13,7 @@ reporte_inconsistencias/
     └── motor_reporte V1.py      # Script principal del motor de validación
 ```
 
-## 🚀 Requisitos e Instalación
+## Requisitos e Instalación
 
 ### Requisitos Previos
 * Python 3.8+
@@ -23,7 +23,7 @@ reporte_inconsistencias/
 pip install pandas openpyxl
 ```
 
-## ⚙️ Uso
+## Uso
 
 1. Coloca el archivo de datos Excel de entrada dentro de la carpeta `fuente/`.
 2. Ejecuta el script principal:
@@ -32,7 +32,7 @@ pip install pandas openpyxl
    ```
 3. El reporte generado con estilos e inconsistencias resaltadas en rojo se guardará automáticamente en la carpeta `reporte/`.
 
-## 🔍 Validaciones Incorporadas
+## Validaciones Incorporadas
 
 1. **Validación 01**: Causa Externa Incorrecta PyM (Promoción y Mantenimiento).
 2. **Validación 02**: Finalidad Incorrecta en Programas de Control (Hipertensión/Diabetes).
